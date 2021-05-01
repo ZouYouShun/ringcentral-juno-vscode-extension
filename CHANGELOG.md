@@ -1,9 +1,7 @@
 # Change Log
 
-All notable changes to the "ringcentral-juno" extension will be documented in this file.
+## 0.0.1
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+### Features
 
-## [Unreleased]
-
-- Initial release
+- **Migrate token**: support `migrate file` and `migrate folder once` command

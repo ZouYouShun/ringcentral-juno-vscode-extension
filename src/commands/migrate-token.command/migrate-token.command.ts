@@ -65,14 +65,19 @@ const getMigrateTemplate = async (
       case '.jsx':
         {
           const getPaletteStrings =
-            result.match(/color={\[.*\]|color={'.*'|color=".*"/g) || [];
+            result.match(
+              /color={\[.*\]|color={'.*'|color=".*"|palette2\(.*\)/g,
+            ) || [];
 
           getPaletteStrings.forEach((x) => {
+            const isPalette2 = x.includes('palette2');
             const isArray = x.includes('[');
             const key = x
               .replace('color={', '')
               .replace('color="', '')
-              .replace('"', '');
+              .replace('"', '')
+              .replace("palette2('", '')
+              .replace("')", '');
 
             const mapKey = key
               .replace(/\['|'\]/g, '')
@@ -86,9 +91,14 @@ const getMigrateTemplate = async (
 
             if (targetToken) {
               if (targetToken instanceof Array) {
+                const replaceTarget = targetToken[0].split('-').join('.');
                 result = result.replace(
                   new RegExp(key, 'g'),
-                  `'${targetToken[0].split('-').join('.')}'${targetToken[1]}`,
+                  `'${
+                    isPalette2
+                      ? `${replaceTarget.split('.').join("', '")}`
+                      : replaceTarget
+                  }'${targetToken[1]}`,
                 );
               } else {
                 const sourceTarget = targetToken.split('-').join('.');
@@ -98,7 +108,11 @@ const getMigrateTemplate = async (
 
                 result = result.replace(
                   new RegExp(key.replace('[', '\\[').replace(']', '\\]'), 'g'),
-                  `${replaceTarget}`,
+                  `${
+                    isPalette2
+                      ? `${replaceTarget.split('.').join("', '")}`
+                      : replaceTarget
+                  }`,
                 );
               }
             } else if (
@@ -107,10 +121,14 @@ const getMigrateTemplate = async (
               ) ||
               mapKey.includes('#')
             ) {
-              result = result.replace(
-                new RegExp(key.replace('[', '\\[').replace(']', '\\]'), 'g'),
-                `${key}/* !!!This token not exist! CONFIRM with Designer which one should use */`,
-              );
+              try {
+                result = result.replace(
+                  new RegExp(key.replace('[', '\\[').replace(']', '\\]'), 'g'),
+                  `${key}/* !!!This token not exist! CONFIRM with Designer which one should use */`,
+                );
+              } catch (error) {
+                console.log(key, error);
+              }
             }
           });
         }

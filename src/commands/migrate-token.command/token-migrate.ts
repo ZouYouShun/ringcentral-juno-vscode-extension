@@ -53,7 +53,7 @@ export const tokenMapping = {
   'globalHeader-dialIcon': 'dialHeader-icon',
   'globalHeader-divider': 'header-divider',
   'element-default': 'neutral-f02',
-  'element-primary': 'interactive-f02',
+  'element-primary': 'interactive-f01',
   'element-negative': 'danger-f02',
   'element-disabled': 'disabled-f02',
   'border-default': 'neutral-l03',

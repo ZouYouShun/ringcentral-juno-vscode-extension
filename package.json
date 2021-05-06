@@ -2,7 +2,7 @@
   "name": "ringcentral-juno-vscode-extension",
   "displayName": "ringcentral-juno",
   "description": "ringcentral juno theme system syntax",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "preview": true,
   "publisher": "declanzou",
   "repository": "https://github.com/ZouYouShun/ringcentral-juno-vscode-extension",

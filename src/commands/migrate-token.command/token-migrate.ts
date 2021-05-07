@@ -144,4 +144,12 @@ export const tokenMapping = {
   'semantic-positive': ['success-b04', confirmWithDesigner],
   'semantic-critical': ['warning-b03', confirmWithDesigner],
   'semantic-neutral': ['neutral-b04', confirmWithDesigner],
+  initial: null,
+  inherit: null,
+  primary: 'interactive-f01',
+  secondary: 'highlight-f02',
+  textPrimary: 'neutral-f06',
+  textSecondary: 'neutral-f04',
+  error: 'danger-f02',
+  'common-white': 'neutral-b01',
 };

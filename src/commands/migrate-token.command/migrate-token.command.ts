@@ -1,7 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { findColorField, findColorObjectProp, findColorProp, findPalette2 } from '../../listeners/finders';
+import {
+  findColorField,
+  findColorObjectProp,
+  findColorProp,
+  findPalette2,
+} from '../../listeners/finders';
 
 import { askTargetFolder, extensionNamespace, Lib } from '../../utils';
 import { OutputChannel } from './../../utils/extension/outputCannel';
@@ -75,14 +80,33 @@ const getMigrateTemplate = async (
               const { start, end, paletteKeys } = resultItems[i];
 
               const oldToken = paletteKeys.join('-');
-              const toToken: string = tokenMapping[oldToken];
-              result =
-                result.slice(0, start) +
-                toToken.replace('-', '.') +
-                result.slice(end);
+              const toToken: string | string[] = tokenMapping[oldToken];
+
+              if (toToken) {
+                if (toToken instanceof Array) {
+                  result =
+                    result.slice(0, start) +
+                    toToken[0].replace('-', '.') +
+                    toToken[1] +
+                    result.slice(end);
+                } else {
+                  result =
+                    result.slice(0, start) +
+                    toToken.replace('-', '.') +
+                    result.slice(end);
+                }
+              } else if (
+                ![...newToken, 'initial', 'inherit', 'default'].includes(
+                  oldToken,
+                ) &&
+                !oldToken.includes('#')
+              ) {
+                result =
+                  result.slice(0, end) + notExistComment + result.slice(end);
+              }
             }
           };
-          
+
           switchColor(findColorProp);
           switchColor(findColorField);
           switchColor(findColorObjectProp);

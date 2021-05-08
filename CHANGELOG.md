@@ -2,6 +2,13 @@
 
 ## 0.0.2
 
+### Fix
+
+- **Token syntax highlight**: fix highlight logic with one line have multiple `palette2`
+- **Migrate token**: fix migrate logic
+
+## 0.0.2
+
 ### Features
 
 - **Token syntax highlight**: support palette color syntax highlight

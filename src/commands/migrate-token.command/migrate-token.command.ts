@@ -116,8 +116,10 @@ const getMigrateTemplate = async (
                 );
               }
             } else if (
-              ![...newToken, 'initial', 'inherit'].includes(mapKey) ||
-              mapKey.includes('#')
+              ![...newToken, 'initial', 'inherit', 'default'].includes(
+                mapKey,
+              ) &&
+              !mapKey.includes('#')
             ) {
               try {
                 result = result.replace(

@@ -1,11 +1,15 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { findColorField, findColorObjectProp, findColorProp, findPalette2 } from '../../listeners/finders';
 
 import { askTargetFolder, extensionNamespace, Lib } from '../../utils';
 import { OutputChannel } from './../../utils/extension/outputCannel';
 import { newToken } from './new-token';
 import { tokenMapping } from './token-migrate';
+
+const notExistComment =
+  '/* !!!This token not exist! CONFIRM with Designer which one should use */';
 
 const getMigrateTemplate = async (
   fileTree: string[],
@@ -64,73 +68,25 @@ const getMigrateTemplate = async (
       case '.tsx':
       case '.jsx':
         {
-          const getPaletteStrings =
-            result.match(
-              /color={\[.*\]|color={'.*'|color=".*"|palette2\(.*\)/g,
-            ) || [];
+          const switchColor = (cb: Function) => {
+            const resultItems = cb(result, true);
 
-          getPaletteStrings.forEach((x) => {
-            const isPalette2 = x.includes('palette2');
-            const isArray = x.includes('[');
-            const key = x
-              .replace('color={', '')
-              .replace('color="', '')
-              .replace('"', '')
-              .replace("palette2('", '')
-              .replace("')", '');
+            for (let i = resultItems.length - 1; i >= 0; i--) {
+              const { start, end, paletteKeys } = resultItems[i];
 
-            const mapKey = key
-              .replace(/\['|'\]/g, '')
-              .replace("', '", '-')
-              .replace('.', '-');
-
-            const targetToken:
-              | string
-              | string[]
-              | undefined = (tokenMapping as any)[mapKey];
-
-            if (targetToken) {
-              if (targetToken instanceof Array) {
-                const replaceTarget = targetToken[0].split('-').join('.');
-                result = result.replace(
-                  new RegExp(key, 'g'),
-                  `'${
-                    isPalette2
-                      ? `${replaceTarget.split('.').join("', '")}`
-                      : replaceTarget
-                  }'${targetToken[1]}`,
-                );
-              } else {
-                const sourceTarget = targetToken.split('-').join('.');
-                const replaceTarget = isArray
-                  ? `'${sourceTarget}'`
-                  : sourceTarget;
-
-                result = result.replace(
-                  new RegExp(key.replace('[', '\\[').replace(']', '\\]'), 'g'),
-                  `${
-                    isPalette2
-                      ? `${replaceTarget.split('.').join("', '")}`
-                      : replaceTarget
-                  }`,
-                );
-              }
-            } else if (
-              ![...newToken, 'initial', 'inherit', 'default'].includes(
-                mapKey,
-              ) &&
-              !mapKey.includes('#')
-            ) {
-              try {
-                result = result.replace(
-                  new RegExp(key.replace('[', '\\[').replace(']', '\\]'), 'g'),
-                  `${key}/* !!!This token not exist! CONFIRM with Designer which one should use */`,
-                );
-              } catch (error) {
-                console.log(key, error);
-              }
+              const oldToken = paletteKeys.join('-');
+              const toToken: string = tokenMapping[oldToken];
+              result =
+                result.slice(0, start) +
+                toToken.replace('-', '.') +
+                result.slice(end);
             }
-          });
+          };
+          
+          switchColor(findColorProp);
+          switchColor(findColorField);
+          switchColor(findColorObjectProp);
+          switchColor(findPalette2);
         }
 
         break;

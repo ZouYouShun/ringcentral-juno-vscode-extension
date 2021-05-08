@@ -161,4 +161,8 @@ export namespace Lib {
   export function firstLowerCase(input: string): string {
     return input[0].toLowerCase() + input.substr(1);
   }
+
+  export function escapeRegExp(input: string) {
+    return input.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+  }
 }

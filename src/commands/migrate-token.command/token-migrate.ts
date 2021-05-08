@@ -150,4 +150,4 @@ export const tokenMapping = {
   textSecondary: ['neutral-f04', confirmWithDesigner],
   error: ['danger-f02', confirmWithDesigner],
   'common-white': 'neutral-b01',
-};
+} as any;

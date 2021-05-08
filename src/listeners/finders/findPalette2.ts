@@ -24,7 +24,7 @@ const getResult = ({ isGetColor, start, end, palette2Keys }: any) => {
 };
 
 export const findPalette2 = (text: string, isGetColor = false) => {
-  const regEx = /palette2\((.*)\)/g;
+  const regEx = /palette2\(([^()]+)\)/g;
 
   let result = [];
   let match;

@@ -8,6 +8,8 @@ Make you use Juno more efficient.
 
 ### Theme switch
 
+![](https://raw.githubusercontent.com/ZouYouShun/ringcentral-juno-vscode-extension/master/doc/assets/switch-theme.gif)
+
 Support set custom theme json file, set config in `.vscode/settings.json` or global `setting`
 
 > remember **reload** vscode after update `themeMap`

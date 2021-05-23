@@ -1,5 +1,18 @@
 # Change Log
 
+## 0.0.4
+
+### Features
+
+- **Custom palette**: Support custom theme palette object with config
+- **Scss highlight**: Support highlight scss `rc-palette`
+
+## 0.0.3
+
+## Fix
+
+- **Fix Regex**: fix match palette
+
 ## 0.0.2
 
 ### Fix

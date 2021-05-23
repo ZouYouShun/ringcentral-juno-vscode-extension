@@ -11,16 +11,26 @@ export const selectCurrentPaletteThemeCommand = vscode.commands.registerCommand(
     ].map<vscode.QuickPickItem>((label) => {
       return {
         label,
-        description: themeManager.themeName === label ? '(current ✅)' : '',
       };
     });
 
-    const value = await vscode.window.showQuickPick(options, {
-      placeHolder: 'Which theme you want to use?',
-    });
+    const index = options.findIndex((x) => x.label === themeManager.themeName);
 
-    if (value) {
-      themeManager.setCurrentTheme(value?.label);
+    if (index > -1) {
+      const [selectedItem] = options.splice(index, 1);
+
+      const toOptions: vscode.QuickPickItem[] = [
+        { ...selectedItem, description: '(current ✅)' },
+        ...options,
+      ];
+
+      const value = await vscode.window.showQuickPick(toOptions, {
+        placeHolder: 'Which theme you want to use?',
+      });
+
+      if (value) {
+        themeManager.setCurrentTheme(value?.label);
+      }
     }
   },
 );

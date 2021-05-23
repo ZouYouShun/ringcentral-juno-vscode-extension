@@ -18,7 +18,30 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": [
+      {
+        "title": "Juno palette configuration",
+        "properties": {
+          "ringcentral-juno.currentTheme": {
+            "type": "string",
+            "default": "",
+            "description": "The default display palette theme name",
+            "scope": "window"
+          },
+          "ringcentral-juno.themeMap": {
+            "type": "object",
+            "default": {},
+            "description": "The theme mapping with your custom themes",
+            "scope": "resource"
+          }
+        }
+      }
+    ],
     "commands": [
+      {
+        "command": "ringcentral-juno.selectCurrentPaletteTheme",
+        "title": "Juno: select current palette theme"
+      },
       {
         "command": "ringcentral-juno.migrateFileToken",
         "title": "Juno: Migrate current file to new token"

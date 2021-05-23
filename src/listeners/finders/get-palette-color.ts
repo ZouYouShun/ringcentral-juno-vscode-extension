@@ -1,4 +1,4 @@
-import * as additionPalette from './additionPalette.json';
+import { themeManager } from '../../utils';
 
 export const getPaletteColor = (palette2Keys: string[]) => {
   const targetColor = palette2Keys.reduce((acc, curr, i) => {
@@ -10,7 +10,7 @@ export const getPaletteColor = (palette2Keys: string[]) => {
     }
     // eslint-disable-next-line eqeqeq
     return acc == null ? '' : (acc as any)[curr];
-  }, additionPalette);
+  }, themeManager.palette);
 
   return targetColor;
 };

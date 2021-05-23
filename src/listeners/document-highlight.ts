@@ -5,6 +5,7 @@ import {
   findColorObjectProp,
   findColorProp,
   findPalette2,
+  findScssRcPalette,
 } from './finders/findPalette2';
 import { DecorationMap } from './libs';
 
@@ -20,6 +21,7 @@ export class DocumentHighlight {
     findColorProp,
     findColorObjectProp,
     findColorField,
+    findScssRcPalette,
   ];
 
   constructor(public document: vscode.TextDocument) {}

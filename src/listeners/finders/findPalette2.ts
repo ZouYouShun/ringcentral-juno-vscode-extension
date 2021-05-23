@@ -23,6 +23,28 @@ const getResult = ({ isGetColor, start, end, palette2Keys }: any) => {
   return null;
 };
 
+export const findScssRcPalette = (text: string, isGetColor = false) => {
+  const regEx = /rc-palette\(([^()]+)\)/g;
+
+  let result = [];
+  let match;
+
+  while ((match = regEx.exec(text))) {
+    const start = match.index + 'rc-palette('.length;
+    const end = start + match[1].length;
+
+    const palette2Keys = match[1].replace(/\'/g, '').split(', ');
+
+    const item = getResult({ isGetColor, start, end, palette2Keys });
+
+    if (item) {
+      result.push(item);
+    }
+  }
+
+  return result;
+};
+
 export const findPalette2 = (text: string, isGetColor = false) => {
   const regEx = /palette2\(([^()]+)\)/g;
 

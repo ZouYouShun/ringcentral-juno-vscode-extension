@@ -63,6 +63,10 @@ class ThemeManager {
     }
   }
 
+  destroy() {
+    this.eventEmitter.dispose();
+  }
+
   get onThemeChange(): vscode.Event<void> {
     return this.eventEmitter.event;
   }

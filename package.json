@@ -24,9 +24,9 @@
         "properties": {
           "ringcentral-juno.currentTheme": {
             "type": "string",
-            "default": "",
+            "default": "default",
             "description": "The default display palette theme name",
-            "scope": "window"
+            "scope": "resource"
           },
           "ringcentral-juno.themeMap": {
             "type": "object",

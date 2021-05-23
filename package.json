@@ -22,7 +22,7 @@
       {
         "title": "Juno palette configuration",
         "properties": {
-          "ringcentral-juno.currentTheme": {
+          "ringcentral-juno.defaultTheme": {
             "type": "string",
             "default": "default",
             "description": "The default display palette theme name",

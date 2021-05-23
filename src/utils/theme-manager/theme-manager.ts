@@ -23,12 +23,12 @@ class ThemeManager {
   constructor() {}
 
   init() {
-    const currentThemeName = vscode.workspace
+    const defaultThemeName = vscode.workspace
       .getConfiguration(extensionNamespace)
-      .get<string>('currentTheme');
+      .get<string>('defaultTheme');
 
-    if (currentThemeName) {
-      this.themeName = currentThemeName;
+    if (defaultThemeName) {
+      this.themeName = defaultThemeName;
     }
 
     const themeMap = vscode.workspace

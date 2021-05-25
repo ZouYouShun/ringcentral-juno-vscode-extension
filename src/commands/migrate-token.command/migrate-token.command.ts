@@ -14,7 +14,7 @@ import { newToken } from './new-token';
 import { tokenMapping } from './token-migrate';
 
 const notExistComment =
-  '/* !!!This token not exist! CONFIRM with Designer which one should use */';
+  '/* [Juno] !!!This token not exist! CONFIRM with Designer which one should use */';
 
 const getMigrateTemplate = async (
   fileTree: string[],
@@ -39,10 +39,9 @@ const getMigrateTemplate = async (
               .replace(', ', '-')
               .toLocaleLowerCase();
 
-            const targetToken:
-              | string
-              | string[]
-              | undefined = (tokenMapping as any)[mapKey];
+            const targetToken: string | string[] | undefined = (
+              tokenMapping as any
+            )[mapKey];
 
             if (targetToken) {
               if (targetToken instanceof Array) {
@@ -73,7 +72,7 @@ const getMigrateTemplate = async (
       case '.tsx':
       case '.jsx':
         {
-          const switchColor = (cb: Function) => {
+          const switchColor = (cb: Function, isSplitArg: boolean = false) => {
             const resultItems = cb(result, true);
 
             for (let i = resultItems.length - 1; i >= 0; i--) {
@@ -82,17 +81,22 @@ const getMigrateTemplate = async (
               const oldToken = paletteKeys.join('-');
               const toToken: string | string[] = tokenMapping[oldToken];
 
+              const getColorString = (value: string) =>
+                isSplitArg
+                  ? `'${value.split('-').join("', '")}'`
+                  : value.replace('-', '.');
+
               if (toToken) {
                 if (toToken instanceof Array) {
                   result =
                     result.slice(0, start) +
-                    toToken[0].replace('-', '.') +
+                    getColorString(toToken[0]) +
                     toToken[1] +
                     result.slice(end);
                 } else {
                   result =
                     result.slice(0, start) +
-                    toToken.replace('-', '.') +
+                    getColorString(toToken) +
                     result.slice(end);
                 }
               } else if (
@@ -110,7 +114,7 @@ const getMigrateTemplate = async (
           switchColor(findColorProp);
           switchColor(findColorField);
           switchColor(findColorObjectProp);
-          switchColor(findPalette2);
+          switchColor(findPalette2, true);
         }
 
         break;

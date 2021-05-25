@@ -1,4 +1,4 @@
-const confirmWithDesigner = '/* please confirm with designer that color */';
+const confirmWithDesigner = '/* [Juno] please confirm with designer that color */';
 
 export const tokenMapping = {
   'background-default': 'neutral-b01',

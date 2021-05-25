@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.5
+
+### Fix
+- **Migrate token**: fix palette2 migrate error issue
+
 ## 0.0.4
 
 ### Features

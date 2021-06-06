@@ -1,0 +1,15 @@
+{
+  "name": "ringcentral-juno-vscode-extension-language-server",
+  "description": "Juno language server",
+  "version": "1.0.0",
+  "license": "MIT",
+  "engines": {
+    "node": "*"
+  },
+  "repository": "https://github.com/ZouYouShun/ringcentral-juno-vscode-extension",
+  "dependencies": {
+    "vscode-languageserver": "^7.0.0",
+    "vscode-languageserver-textdocument": "^1.0.1"
+  },
+  "scripts": {}
+}

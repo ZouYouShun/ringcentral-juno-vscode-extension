@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as vscode from 'vscode';
 
 import {
@@ -5,31 +6,25 @@ import {
   migrateFolderTokenCommand,
   selectCurrentPaletteThemeCommand,
 } from './commands';
+import { createStatusBar, getBarText } from './createStatusBar';
+import { initLanguageClient } from './languageClient';
 import { bindHighlightPaletteListeners } from './listeners';
-import { extensionNamespace, themeManager } from './utils';
+import { themeManager } from './utils';
 
 let dispose: () => void;
-
-function createStatusBar() {
-  const barItem = vscode.window.createStatusBarItem(
-    vscode.StatusBarAlignment.Right,
-  );
-  barItem.command = `${extensionNamespace}.selectCurrentPaletteTheme`;
-  barItem.text = getBarText();
-  barItem.tooltip = 'Juno current theme name';
-  barItem.show();
-  return barItem;
-}
-
-function getBarText(): string {
-  return `Theme: ${themeManager.themeName}`;
-}
+let disposeLanguageServer: () => void;
 
 export function activate(context: vscode.ExtensionContext) {
   themeManager.init();
 
+  /**
+   * init status bar
+   */
   const paletteStatusBarItem = createStatusBar();
 
+  /**
+   * bind syntax highlight
+   */
   dispose = bindHighlightPaletteListeners(context);
 
   themeManager.onThemeChange(() => {
@@ -37,6 +32,15 @@ export function activate(context: vscode.ExtensionContext) {
 
     dispose = bindHighlightPaletteListeners(context);
   });
+
+  /**
+   * connect language server
+   */
+  const serverModule = context.asAbsolutePath(
+    path.join('server', 'out', 'server.js'),
+  );
+
+  disposeLanguageServer = initLanguageClient({ serverPath: serverModule });
 
   context.subscriptions.push(
     migrateFileTokenCommand,
@@ -48,5 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {
   dispose();
+  disposeLanguageServer();
+
   themeManager.destroy();
 }

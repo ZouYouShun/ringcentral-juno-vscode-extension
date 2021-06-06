@@ -1,0 +1,23 @@
+{
+	"name": "ringcentral-juno-vscode-extension-client",
+	"description": "VSCode part of a language server",
+	"license": "MIT",
+	"version": "0.0.1",
+	"publisher": "vscode",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Microsoft/vscode-extension-samples"
+	},
+	"engines": {
+		"vscode": "^1.52.0"
+	},
+	"dependencies": {
+		"color-name": "^1.1.4",
+		"vscode-languageclient": "^7.0.0"
+	},
+	"devDependencies": {
+		"@types/color-name": "^1.1.1",
+		"@types/vscode": "^1.52.0",
+		"vscode-test": "^1.3.0"
+	}
+}

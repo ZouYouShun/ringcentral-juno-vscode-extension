@@ -1,7 +1,7 @@
 import { Position } from 'vscode-languageserver-textdocument';
 import { CompletionItem } from 'vscode-languageserver/node';
 
-import { palette2PaletteItems, stringPaletteItems } from './paletteChoice';
+import { themeManager } from './theme-manager';
 
 export function getCompletionResults(text: string, position: Position) {
   const check = (
@@ -20,6 +20,8 @@ export function getCompletionResults(text: string, position: Position) {
 
     return false;
   };
+
+  const { stringPaletteItems, palette2PaletteItems } = themeManager;
 
   // findColorProp
   return (

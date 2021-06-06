@@ -1,5 +1,3 @@
-import * as additionPalette from 'ringcentral-juno-vscode-extension-client/src/listeners/finders/additionPalette.json';
-
 const loopGetValue = (
   acc: any[],
   obj: any,
@@ -21,14 +19,13 @@ const loopGetValue = (
   });
 };
 
-export const themeManager = { palette: additionPalette as any };
-
 export const getPaletteChoice = (
+  palette: any,
   handleKeyFn: (value: string[]) => any = (value) => value,
 ) => {
   const arr: any[] = [];
 
-  loopGetValue(arr, themeManager.palette, handleKeyFn);
+  loopGetValue(arr, palette, handleKeyFn);
 
   return arr;
 };

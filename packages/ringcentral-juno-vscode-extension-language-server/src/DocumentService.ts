@@ -1,6 +1,7 @@
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { Connection, TextDocuments } from 'vscode-languageserver/node';
 
+// TODO: wait for refactor server
 export class DocumentService {
 	public documents: TextDocuments<TextDocument>;
 

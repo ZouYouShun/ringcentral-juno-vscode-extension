@@ -5,7 +5,6 @@ import {
   Command,
   CompletionItem,
   createConnection,
-  DidChangeConfigurationNotification,
   InitializeParams,
   InitializeResult,
   ProposedFeatures,
@@ -14,7 +13,7 @@ import {
   TextDocumentSyncKind,
 } from 'vscode-languageserver/node';
 
-import { themeManager, getCompletionResults, requestKeys } from './utils';
+import { getCompletionResults, themeManager } from './utils';
 
 const connection = createConnection(ProposedFeatures.all);
 
@@ -40,15 +39,16 @@ connection.onInitialize((params: InitializeParams) => {
   return result;
 });
 
+// init request transport
 connection.onInitialized(() => {
   connection.sendRequest('init').then((inputPalette) => {
-    themeManager.palette = inputPalette;
+    themeManager.updatePalette(inputPalette);
     return 'success';
   });
 });
 
-connection.onRequest(requestKeys.themeChange, (inputPalette) => {
-  themeManager.palette = inputPalette;
+connection.onRequest('juno-theme-change', (inputPalette) => {
+  themeManager.updatePalette(inputPalette);
   return 'success';
 });
 

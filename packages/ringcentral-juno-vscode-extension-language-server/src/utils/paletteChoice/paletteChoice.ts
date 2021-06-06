@@ -20,14 +20,15 @@ const loopGetValue = (
     }
   });
 };
-const totalPalette = additionPalette;
+
+export const themeManager = { palette: additionPalette as any };
 
 export const getPaletteChoice = (
   handleKeyFn: (value: string[]) => any = (value) => value,
 ) => {
   const arr: any[] = [];
 
-  loopGetValue(arr, totalPalette, handleKeyFn);
+  loopGetValue(arr, themeManager.palette, handleKeyFn);
 
   return arr;
 };

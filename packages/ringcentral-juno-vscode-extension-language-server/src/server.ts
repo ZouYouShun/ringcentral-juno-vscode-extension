@@ -14,13 +14,14 @@ import {
   TextDocumentSyncKind,
 } from 'vscode-languageserver/node';
 
-import { getCompletionResults } from './utils';
+import { themeManager, getCompletionResults, requestKeys } from './utils';
 
 const connection = createConnection(ProposedFeatures.all);
 
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 const showCompletionCmd = 'juno-server.showCompletion';
+
 const commands = [showCompletionCmd];
 
 let tmpCompletionResult: CompletionItem[] | null;
@@ -37,6 +38,18 @@ connection.onInitialize((params: InitializeParams) => {
   };
 
   return result;
+});
+
+connection.onInitialized(() => {
+  connection.sendRequest('init').then((inputPalette) => {
+    themeManager.palette = inputPalette;
+    return 'success';
+  });
+});
+
+connection.onRequest(requestKeys.themeChange, (inputPalette) => {
+  themeManager.palette = inputPalette;
+  return 'success';
 });
 
 connection.onDidChangeTextDocument(() => {
@@ -110,7 +123,7 @@ connection.onCodeAction(({ textDocument, range }) => {
 });
 
 connection.onExecuteCommand(async (params) => {
-  // console.log('!!onExecuteCommand', params);
+  console.log('!!onExecuteCommand', params);
 });
 
 connection.onCompletionResolve((item: CompletionItem): CompletionItem => {

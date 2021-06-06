@@ -7,7 +7,7 @@ import {
   selectCurrentPaletteThemeCommand,
 } from './commands';
 import { createStatusBar, getBarText } from './createStatusBar';
-import { initLanguageClient } from './languageClient';
+import { initLanguageClient, languageClient } from './languageClient';
 import { bindHighlightPaletteListeners } from './listeners';
 import { themeManager } from './utils';
 
@@ -16,6 +16,7 @@ let disposeLanguageServer: () => void;
 
 export function activate(context: vscode.ExtensionContext) {
   themeManager.init();
+  // TODO: send theme to server
 
   /**
    * init status bar
@@ -27,10 +28,17 @@ export function activate(context: vscode.ExtensionContext) {
    */
   dispose = bindHighlightPaletteListeners(context);
 
-  themeManager.onThemeChange(() => {
+  themeManager.onThemeChange((palette) => {
     paletteStatusBarItem.text = getBarText();
 
     dispose = bindHighlightPaletteListeners(context);
+
+    // TODO: send theme to server
+    // executeCommand('juno-server.showCompletion');
+
+    languageClient.sendRequest('juno-theme-change', palette).then((data) => {
+      console.log(data);
+    });
   });
 
   /**
@@ -41,6 +49,14 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   disposeLanguageServer = initLanguageClient({ serverPath: serverModule });
+
+  languageClient.start();
+
+  languageClient.onReady().then(() => {
+    languageClient.onRequest('init', () => {
+      return themeManager.palette;
+    });
+  });
 
   context.subscriptions.push(
     migrateFileTokenCommand,

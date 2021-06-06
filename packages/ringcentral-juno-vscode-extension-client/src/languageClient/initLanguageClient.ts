@@ -16,8 +16,9 @@ const DEFAULT_LANGUAGES = [
   'typescriptreact',
 ];
 
+export let languageClient: LanguageClient;
+
 export const initLanguageClient = ({ serverPath }: { serverPath: string }) => {
-  let client: LanguageClient;
   // The debug options for the server
   // --inspect=6009: runs the server in Node's Inspector mode so VS Code can attach to the server for debugging
   const debugOptions = { execArgv: ['--nolazy', '--inspect=6009'] };
@@ -47,19 +48,17 @@ export const initLanguageClient = ({ serverPath }: { serverPath: string }) => {
     },
   };
 
-  client = new LanguageClient(
+  languageClient = new LanguageClient(
     'JunoLanguageServer',
     'Juno Language Server',
     serverOptions,
     clientOptions,
   );
 
-  client.start();
-
   return () => {
-    if (!client) {
+    if (!languageClient) {
       return undefined;
     }
-    return client.stop();
+    return languageClient.stop();
   };
 };

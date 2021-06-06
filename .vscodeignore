@@ -10,3 +10,6 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 doc/**
+packages/**
+scripts/**
+.prettierrc.js

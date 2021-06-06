@@ -37,7 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
    * connect language server
    */
   const serverModule = context.asAbsolutePath(
-    path.join('server', 'out', 'server.js'),
+    path.join('out', 'server', 'server.js'),
   );
 
   disposeLanguageServer = initLanguageClient({ serverPath: serverModule });

@@ -9,7 +9,7 @@ import {
 } from '../../listeners/finders';
 
 import { askTargetFolder, extensionNamespace, Lib } from '../../utils';
-import { OutputChannel } from './../../utils/extension/outputCannel';
+import { OutputChannel } from '../../utils/extension/outputCannel';
 import { newToken } from './new-token';
 import { tokenMapping } from './token-migrate';
 

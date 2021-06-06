@@ -1,10 +1,13 @@
-import { workspace } from 'vscode';
+import * as vscode from 'vscode';
 import {
   LanguageClient,
   LanguageClientOptions,
+  RevealOutputChannelOn,
   ServerOptions,
   TransportKind,
 } from 'vscode-languageclient/node';
+
+import { executeCommand } from '../utils';
 
 const DEFAULT_LANGUAGES = [
   'javascript',
@@ -29,20 +32,21 @@ export const initLanguageClient = ({ serverPath }: { serverPath: string }) => {
       options: debugOptions,
     },
   };
-  // Options to control the language client
+
   const clientOptions: LanguageClientOptions = {
-    // Register the server for plain text documents
     documentSelector: DEFAULT_LANGUAGES.map((language) => ({
       scheme: 'file',
       language,
     })),
-    synchronize: {
-      // Notify the server about file changes to '.clientrc files contained in the workspace
-      fileEvents: workspace.createFileSystemWatcher('**/.clientrc'),
+    middleware: {
+      executeCommand: async (command, args, next) => {
+        executeCommand('editor.action.triggerSuggest');
+
+        return next(command, args);
+      },
     },
   };
 
-  // Create the language client and start the client.
   client = new LanguageClient(
     'JunoLanguageServer',
     'Juno Language Server',
@@ -50,7 +54,6 @@ export const initLanguageClient = ({ serverPath }: { serverPath: string }) => {
     clientOptions,
   );
 
-  // Start the client. This will also launch the server
   client.start();
 
   return () => {

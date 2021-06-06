@@ -55,7 +55,7 @@ export const findPalette2 = (text: string, isGetColor = false) => {
     const start = match.index + 'palette2('.length;
     const end = start + match[1].length;
 
-    const palette2Keys = match[1].replace(/\'/g, '').split(', ');
+    const palette2Keys = match[1].replace(/\'|\"/g, '').split(', ');
 
     const item = getResult({ isGetColor, start, end, palette2Keys });
 

@@ -12,7 +12,11 @@
 			],
 			"outFiles": [
 				"${workspaceRoot}/out/client/**/*.js"
-			]
+			],
+			"preLaunchTask": {
+				"type": "npm",
+				"script": "watch"
+			}
 		},
 		{
 			"type": "node",

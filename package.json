@@ -64,8 +64,8 @@
     "clean": "rm -rf ./out",
     "vscode:prepublish": "npm run clean && npm run -S esbuild-base -- --minify",
     "esbuild-base": "node scripts/esbuild.js",
-    "compile": "npm run -S esbuild-base -- --sourcemap",
-    "watch": "npm run -S esbuild-base -- --sourcemap --watch",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
     "test": "sh ./scripts/e2e.sh",
     "package": "vsce package --yarn"
   },

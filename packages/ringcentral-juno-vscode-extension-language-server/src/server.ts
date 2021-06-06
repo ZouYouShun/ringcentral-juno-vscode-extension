@@ -1,7 +1,6 @@
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import {
   CompletionItem,
-  CompletionItemKind,
   createConnection,
   DidChangeConfigurationNotification,
   InitializeParams,
@@ -12,7 +11,7 @@ import {
   TextDocumentSyncKind,
 } from 'vscode-languageserver/node';
 
-import { getPaletteChoice } from './paletteChoice';
+import { getCompletionResults } from './utils';
 
 const connection = createConnection(ProposedFeatures.all);
 
@@ -76,23 +75,6 @@ connection.onDidChangeWatchedFiles((_change) => {
   connection.console.log('We received an file change event');
 });
 
-const paletteItems = getPaletteChoice((value) => value.join('.'));
-
-connection.onCodeAction((...e) => {
-  console.log('onCodeAction', e);
-  return null;
-});
-
-connection.onDocumentColor((...e) => {
-  console.log('onDocumentColor', e);
-  return null;
-});
-
-connection.onColorPresentation((...e) => {
-  console.log('onColorPresentation', e);
-  return null;
-});
-
 connection.onCompletion(
   ({
     textDocument,
@@ -100,22 +82,16 @@ connection.onCompletion(
   }: TextDocumentPositionParams): CompletionItem[] => {
     const document = documents.get(textDocument.uri);
 
-    if (document) {
-      const text = document.getText({
-        start: { line: position.line, character: 0 },
-        end: position,
-      });
-      console.log(text);
+    if (!document) {
+      return [];
     }
 
-    return paletteItems.map((x) => {
-      return {
-        label: x.key,
-        kind: CompletionItemKind.Color,
-        documentation: x.value,
-        sortText: '0',
-      };
+    const text = document.getText({
+      start: { line: position.line, character: 0 },
+      end: { line: position.line, character: position.character + 1 },
     });
+
+    return getCompletionResults(text, position);
   },
 );
 

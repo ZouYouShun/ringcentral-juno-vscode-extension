@@ -2,7 +2,7 @@
   "name": "ringcentral-juno-vscode-extension",
   "displayName": "ringcentral-juno",
   "description": "ringcentral juno theme system syntax",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "preview": true,
   "private": true,
@@ -62,12 +62,13 @@
   },
   "scripts": {
     "clean": "rm -rf ./out",
-    "vscode:prepublish": "npm run clean && npm run -S esbuild-base -- --minify",
+    "vscode:prepublish": "npm run clean && npm run compile",
+    "vscode:prepublish-tmp": "npm run clean && npm run -S esbuild-base -- --minify",
     "esbuild-base": "node scripts/esbuild.js",
     "compile": "tsc -b",
     "watch": "tsc -b -w",
     "test": "sh ./scripts/e2e.sh",
-    "package": "vsce package --yarn"
+    "package": "npm run clean && vsce package --yarn"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.2",

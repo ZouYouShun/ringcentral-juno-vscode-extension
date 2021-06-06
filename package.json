@@ -62,19 +62,19 @@
   },
   "scripts": {
     "clean": "rm -rf ./out",
-    "clean-modules": "npm run clean & rm -rf ./node_modules ./client/node_modules ./server/node_modules",
-    "vscode:prepublish": "npm run clean && npm run compile",
-    "compile": "tsc -b",
-    "watch": "tsc -b -w",
-    "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+    "vscode:prepublish": "npm run clean && npm run -S esbuild-base -- --minify",
+    "esbuild-base": "node scripts/esbuild.js",
+    "compile": "npm run -S esbuild-base -- --sourcemap",
+    "watch": "npm run -S esbuild-base -- --sourcemap --watch",
     "test": "sh ./scripts/e2e.sh",
-    "package": "vsce package"
+    "package": "vsce package --yarn"
   },
   "devDependencies": {
     "@types/mocha": "^8.2.2",
     "@types/node": "^12.12.0",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
+    "esbuild": "^0.12.6",
     "eslint": "^7.26.0",
     "mocha": "^8.3.2",
     "typescript": "^4.2.3"

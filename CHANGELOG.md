@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.9
+
+### Features
+
+- **Completion**: only show variable palette for use.
+
 ## 0.0.8
 
 ### Fix

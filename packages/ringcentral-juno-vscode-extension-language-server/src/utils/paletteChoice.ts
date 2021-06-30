@@ -1,3 +1,5 @@
+import { isValidPalettes } from './isValidPalettes';
+
 const loopGetValue = (
   acc: any[],
   obj: any,
@@ -23,9 +25,12 @@ export const getPaletteChoice = (
   palette: any,
   handleKeyFn: (value: string[]) => any = (value) => value,
 ) => {
-  const arr: any[] = [];
+  // ex. {key: 'primary.50', value: '#e1f4fb'}
+  const arr: { key: string; value: string }[] = [];
 
   loopGetValue(arr, palette, handleKeyFn);
 
-  return arr;
+  return arr.filter((x) => {
+    return isValidPalettes(x.key);
+  });
 };

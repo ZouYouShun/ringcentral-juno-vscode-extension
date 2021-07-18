@@ -39,7 +39,8 @@ class ThemeManager {
     if (themeMap && rootPath) {
       this.themeMap = Object.entries(themeMap).reduce<any>(
         (acc, [key, url]) => {
-          const filePath = path.join(rootPath, url);
+          // regex make sure resolve path correctly in windows.
+          const filePath = path.join(rootPath, url).replace(/^\\?(.*)/, '$1');
           if (fs.existsSync(filePath) && fs.lstatSync(filePath).isFile()) {
             const object = require(filePath);
             console.log(object);

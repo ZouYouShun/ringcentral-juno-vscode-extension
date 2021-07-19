@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.1.0
+
+### Features
+
+- **Windows**: support windows custom theme file target
+
 ## 0.0.9
 
 ### Features
